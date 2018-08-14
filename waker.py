@@ -11,7 +11,25 @@ if (now_time > datetime.strptime('15:00', '%H:%M').time() and now_time < datetim
     except:
         pass
     try:
+        data = urllib.request.urlopen('http://summer18.herokuapp.com/')
+        data.read()
+        data.close()
+    except:
+        pass
+    try:
         data = urllib.request.urlopen('https://buttertesting.herokuapp.com/')
+        data.read()
+        data.close()
+    except:
+        pass
+    try:
+        data = urllib.request.urlopen('https://reactant.herokuapp.com/')
+        data.read()
+        data.close()
+    except:
+        pass
+    try:
+        data = urllib.request.urlopen('https://aareact.herokuapp.com/')
         data.read()
         data.close()
     except:
