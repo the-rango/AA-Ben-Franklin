@@ -34,6 +34,13 @@ if (now_time > datetime.strptime('15:00', '%H:%M').time() and now_time < datetim
         data.close()
     except:
         pass
+    try:
+        data = urllib.request.urlopen('https://antal.herokuapp.com/')
+        data.read()
+        data.close()
+    except:
+        pass
+    
     print('woke')
 else:
     print ('aint time yet')
