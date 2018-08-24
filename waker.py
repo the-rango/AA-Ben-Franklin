@@ -17,7 +17,7 @@ if True:#(now_time > datetime.strptime('15:00', '%H:%M').time() and now_time < d
     except:
         pass
     try:
-        #data = urllib.request.urlopen('https://buttertesting.herokuapp.com/')
+        data = urllib.request.urlopen('https://websocserver.herokuapp.com/')
         data.read()
         data.close()
     except:
