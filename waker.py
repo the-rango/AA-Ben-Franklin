@@ -7,6 +7,7 @@ sleeping_beauties = ['https://antalmanac.herokuapp.com/',
                      'https://reactant.herokuapp.com/',
                      'https://aareact.herokuapp.com/',
                      'https://antal.herokuapp.com/',
+                     'https://pleaserunforme.herokuapp.com/',
                      'https://gentle-inlet-23513.herokuapp.com/']
                      
 now_time = datetime.now().time()
