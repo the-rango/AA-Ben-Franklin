@@ -3,9 +3,6 @@ import SOCSpider
 import redis
 import datetime
 
-if datetime.datetime.today().weekday() != 3:
-    raise Exception('it\'s not Wednesday my dudes')
-
 r = redis.from_url(os.environ.get('REDISCLOUD_URL'))
     
 #input new
