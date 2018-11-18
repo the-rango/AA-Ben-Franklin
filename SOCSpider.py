@@ -61,7 +61,7 @@ def UrlToDict(url):
             res = classes[RES_INDEX]
             res = ' '.join(chunk for chunk in res.split() if chunk != 'and')
             codes[code] = (cap,enr,req,wl,res)
-        print(code,end=' ')
+            print(code,end=' ')
     #print(url)
     return codes
 
