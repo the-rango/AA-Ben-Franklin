@@ -9,8 +9,8 @@ app = Flask(__name__)
 def _db():
 	val = None
 	if request.method == 'POST':
-		url = urlparse(os.environ.get('REDISCLOUD_URL'))
-		val = eval(redis.Redis(host=url.hostname, port=url.port, password=url.password).get(request.form['key']))
+		r = redis.from_url(os.environ.get('REDISCLOUD_URL'))
+		val = eval(r.get(request.form['key']))
 	return render_template('db.html', val=val)
 
 if __name__ == '__main__':

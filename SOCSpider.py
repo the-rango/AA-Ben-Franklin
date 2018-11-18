@@ -33,7 +33,7 @@ def getURL(depts):
     urls = set()
     for i in sorted(depts):
         #print(i)
-        fields=[('YearTerm','2018-92'),('ShowFinals','1'),('ShowComments','1'),('Dept',i)]
+        fields=[('YearTerm','2019-03'),('ShowFinals','1'),('ShowComments','1'),('Dept',i)]
         url = BASE_URL + urllib.parse.urlencode(fields)
         #print(url)
         urls.add(url)
@@ -61,7 +61,7 @@ def UrlToDict(url):
             res = classes[RES_INDEX]
             res = ' '.join(chunk for chunk in res.split() if chunk != 'and')
             codes[code] = (cap,enr,req,wl,res)
-    #print(codes)
+        print(code,end=' ')
     #print(url)
     return codes
 
