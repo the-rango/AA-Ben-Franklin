@@ -13,11 +13,9 @@ MAX_INDEX = 8
 ENR_INDEX = 9
 WL_INDEX = 10
 REQ_INDEX = 11
+RES_INDEX = -4
 
-#sauce = urllib.request.urlopen('https://pythonprogramming.net/parsememcparseface/').read()
-#soup = bs.BeautifulSoup(sauce,'lxml')
-
-'''Gets list of names of all departments to creatre url for each department''' 
+'''Gets list of names of all departments to creatre url for each department'''
 def getDepts():
     Depts = set()
     with urllib.request.urlopen(BASE_URL) as sauce:
@@ -42,9 +40,10 @@ def getURL(depts):
     return urls
 
 
-'''for each url, creates a dictionary {coursecode: (max, enrolled, waitlisted, requests)}'''
+'''for each url, creates a dictionary:
+{coursecode: (max, enrolled, waitlisted, requests, restrictions)}'''
 def UrlToDict(url):
-    codes={}
+    codes = {}
     sauce = urllib.request.urlopen(url).read()
     soup = bs.BeautifulSoup(sauce, 'html.parser')
     for tr in soup.find_all('tr'):
@@ -59,11 +58,13 @@ def UrlToDict(url):
                 enr = enr[enr.find('/ ')+2:]
             wl = classes[WL_INDEX]
             req = classes[REQ_INDEX]
-            codes[code] = (cap,enr,req,wl)
-    #print(codes)   
+            res = classes[RES_INDEX]
+            res = ' '.join(chunk for chunk in res.split() if chunk != 'and')
+            codes[code] = (cap,enr,req,wl,res)
+    #print(codes)
     #print(url)
     return codes
-    
+
 '''combines dictionary of every department'''
 def getAllInfo(urls):
     all_info = {}
@@ -78,10 +79,9 @@ def print_dict(info):
     for k,v in info.items():
         print(k,v)
     print(len(info))
-                
+
 if __name__ == '__main__':
     departments = getDepts()
     urls = getURL(departments)
     master_dict=getAllInfo(urls)
     print_dict(master_dict)
-    

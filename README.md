@@ -1,4 +1,9 @@
-# AntAlmanac
+# AntAlmanac's Ben Franklin Repo: The One that Started It All
+
+This is the repo for the AntAlmanac's original WebSOC crawler, with some legacy code.
+
+
+### Old ReadMe.md:
 A tool that provides UCI anteaters with historical course information in a visual and inyuitive way to help with scheduling and course planning. With a long-term focus on course availability by quarter and registration history, The AntAlmanac enables student to make better academic course planning decisions. Through history enrollment graphs as well as past course offerings, UCI anteaters can pick courses without the anxiety!
 
 The AntAlmanac is built using Python Flask, HTML + CSS, Javascript (jQuery and simple AngularJS), with a Redis database as the backend datastore.
@@ -22,4 +27,3 @@ The AntAlmanac is still in a very early development phase...but stay tuned! Here
     Awesomeness in general
   </li>
 </ul>
-  
