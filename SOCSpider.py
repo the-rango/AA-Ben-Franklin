@@ -41,7 +41,7 @@ def getURL(depts):
 
 
 '''for each url, creates a dictionary:
-{coursecode: (max, enrolled, waitlisted, requests, restrictions)}'''
+{coursecode: (max, enrolled, requests, waitlisted, restrictions)}'''
 def UrlToDict(url):
     codes = {}
     sauce = urllib.request.urlopen(url).read()
