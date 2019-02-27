@@ -21,5 +21,5 @@ for code, data in master_dict.items():
     req.append(data[2])
     wl.append(data[3])
     res.append(data[4])
-    r.set('w'+code, (cap, enr, req, wl, res))
+    r.set('s'+code, (cap, enr, req, wl, res))
 print('done')
