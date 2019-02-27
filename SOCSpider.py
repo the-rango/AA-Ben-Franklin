@@ -14,6 +14,7 @@ ENR_INDEX = 9
 WL_INDEX = 10
 REQ_INDEX = 11
 RES_INDEX = -4
+TERM = '2019-14'
 
 '''Gets list of names of all departments to creatre url for each department'''
 def getDepts():
@@ -33,7 +34,7 @@ def getURL(depts):
     urls = set()
     for i in sorted(depts):
         #print(i)
-        fields=[('YearTerm','2019-03'),('ShowFinals','1'),('ShowComments','1'),('Dept',i)]
+        fields=[('YearTerm',TERM),('ShowFinals','1'),('ShowComments','1'),('Dept',i)]
         url = BASE_URL + urllib.parse.urlencode(fields)
         #print(url)
         urls.add(url)
