@@ -13,7 +13,7 @@ print('=====================================')
 for code, data in master_dict.items():
     print(code,end=' ')
     try:
-        cap, enr, req, wl, res = eval(r.get('w'+code))
+        cap, enr, req, wl, res = eval(r.get('s'+code))
     except:
         continue
     cap.append(data[0])
