@@ -14,7 +14,8 @@ ENR_INDEX = 9
 WL_INDEX = 10
 REQ_INDEX = 11
 RES_INDEX = -4
-TERM = '2019-14'
+########## Change Qtr ##########
+TERM = '2019-92'
 
 '''Gets list of names of all departments to creatre url for each department'''
 def getDepts():

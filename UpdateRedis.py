@@ -13,7 +13,8 @@ print('=====================================')
 for code, data in master_dict.items():
     print(code,end=' ')
     try:
-        cap, enr, req, wl, res = eval(r.get('s'+code))
+        ########## Change Qtr ##########
+        cap, enr, req, wl, res = eval(r.get('f'+code))
     except:
         continue
     cap.append(data[0])
@@ -21,5 +22,6 @@ for code, data in master_dict.items():
     req.append(data[2])
     wl.append(data[3])
     res.append(data[4])
-    r.set('s'+code, (cap, enr, req, wl, res))
+    ########## Change Qtr ##########
+    r.set('f'+code, (cap, enr, req, wl, res))
 print('done')

@@ -14,4 +14,4 @@ def _db():
 	return render_template('db.html', val=val)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
