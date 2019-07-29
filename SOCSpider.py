@@ -1,89 +1,74 @@
 '''
-Created on Jan 21, 2018
+Scrapes UCI course enrollment information from WebSOC.
 
-@author: andrewself
+@author: thanasibakis, andrewwself
 '''
+
 import bs4 as bs
 import urllib.request
 
 BASE_URL = 'https://www.reg.uci.edu/perl/WebSoc?'
-
-COURSE_CODE_INDEX = 0
-MAX_INDEX = 8
-ENR_INDEX = 9
-WL_INDEX = 10
-REQ_INDEX = 11
-RES_INDEX = -4
-########## Change Qtr ##########
 TERM = '2019-92'
 
-'''Gets list of names of all departments to creatre url for each department'''
-def getDepts():
-    Depts = set()
+'''
+A class for convenient, named access to course statistics.
+'''
+class Course:
+
+    '''
+    Initializes the Course with a sequence of the cells from the WebSOC
+    search results table. Note that these column numbers may change over
+    each quarter.
+    '''
+    def __init__(self, columns):
+        self.code   = columns[0]
+        self.max    = columns[8]
+        self.enr    = columns[9].split(" / ")[-1]
+        self.wl     = columns[10]
+        self.req    = columns[11]
+        self.res    = ' '.join(chunk for chunk in columns[-4].split() if chunk != "and")
+        self.units  = columns[3]
+
+'''
+Creates a generator over all available Courses on WebSOC
+'''
+def getAllCourses(includeDiscussions = False) -> [Course]:
+    for url in _departmentURLs():
+        for course in _departmentCourses(url):
+            if(course.units != '0' or includeDiscussions):
+                yield course
+
+'''
+Given a WebSoc search URL, creates a generator over each Course in the results page
+'''
+def _departmentCourses(url) -> [Course]:
+    
+    # Get the page that lists the courses in a table
+    with urllib.request.urlopen(url) as sauce:
+        soup = bs.BeautifulSoup(sauce, "html.parser")
+    
+    # Iterate over each course, which is each row in the results
+    for row in soup.find_all("tr"):
+
+        # Get the values of each column
+        cells = [ td.string for td in row.find_all("td") ]
+
+        # Convert this row to a Course object
+        if(len(cells) in {16, 17}):
+            yield Course(cells)
+
+'''
+Creates a generator over the URLs of each department's WebSOC search results page
+'''
+def _departmentURLs() -> [str]:
+
+    # Get the page that lists all the departments
     with urllib.request.urlopen(BASE_URL) as sauce:
-        soup = bs.BeautifulSoup(sauce,'html.parser')
-        for option in soup.find_all('select'):
-            #print(option.get('name'))
-            if (option.get('name') == 'Dept'):
-                for name in option.find_all('option'):
-                    Depts.add(name.get('value'))
-        return Depts
+        soup = bs.BeautifulSoup(sauce, "html.parser")
 
-
-'''creates url for each department'''
-def getURL(depts):
-    urls = set()
-    for i in sorted(depts):
-        #print(i)
-        fields=[('YearTerm',TERM),('ShowFinals','1'),('ShowComments','1'),('Dept',i)]
-        url = BASE_URL + urllib.parse.urlencode(fields)
-        #print(url)
-        urls.add(url)
-    return urls
-
-
-'''for each url, creates a dictionary:
-{coursecode: (max, enrolled, requests, waitlisted, restrictions)}'''
-def UrlToDict(url):
-    codes = {}
-    sauce = urllib.request.urlopen(url).read()
-    soup = bs.BeautifulSoup(sauce, 'html.parser')
-    for tr in soup.find_all('tr'):
-        #print(tr)
-        classes = [td.string for td in tr.find_all('td')]
-        if (len(classes)>=16 and len(classes)<=17 and classes[3] != '0'):
-            #print(classes)
-            code = classes[COURSE_CODE_INDEX]
-            cap = classes[MAX_INDEX]
-            enr = classes[ENR_INDEX]
-            if '/' in enr:
-                enr = enr[enr.find('/ ')+2:]
-            wl = classes[WL_INDEX]
-            req = classes[REQ_INDEX]
-            res = classes[RES_INDEX]
-            res = ' '.join(chunk for chunk in res.split() if chunk != 'and')
-            codes[code] = (cap,enr,req,wl,res)
-            print(code,end=' ')
-    #print(url)
-    return codes
-
-'''combines dictionary of every department'''
-def getAllInfo(urls):
-    all_info = {}
-    for url in urls:
-        info= UrlToDict(url)
-        for k,v in info.items():
-            all_info[k]=v
-    return all_info
-
-'''prints master dictionary'''
-def print_dict(info):
-    for k,v in info.items():
-        print(k,v)
-    print(len(info))
-
-if __name__ == '__main__':
-    departments = getDepts()
-    urls = getURL(departments)
-    master_dict=getAllInfo(urls)
-    print_dict(master_dict)
+    # Extract the department codes from the department menu
+    for deptOption in soup.find("select", {"name": "Dept"}).find_all("option"):
+        urlFields = [ ("YearTerm", TERM), ("ShowFinals", '1'), ("ShowComments", '1'), ("Dept", deptOption.get("value")) ]
+        
+        # Encode the URL that shows courses in this department
+        yield BASE_URL + urllib.parse.urlencode(urlFields)
