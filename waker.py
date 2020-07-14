@@ -1,7 +1,6 @@
 import urllib.request
 
-sleeping_beauties = ['https://mediaont.herokuapp.com/',
-                    'https://blipbug.herokuapp.com/']
+sleeping_beauties = ['https://compreqs.herokuapp.com/']
 
 for beauty in sleeping_beauties:
     try:
